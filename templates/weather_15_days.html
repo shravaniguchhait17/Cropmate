@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content%}
+
+
+<div class="container">
+    <br><br><br><br><br><br><br><br>
+    <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Temp</th>
+                <th>Weather</th>
+                <th>Wind Speed</th>
+                <th>Humidity</th>
+                <th>Sunrise</th>
+                <th>Sunset</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in range(result_len) %}
+              <tr>
+                <td>{{result[i]['temp']}}</td>
+                <td>{{result[i]['weather']}}</td>
+                <td>{{result[i]['wind_speed']}}</td>
+                <td>{{result[i]['max_humidity']}}</td>
+                <td>{{result[i]['sunrise']}}</td>
+                <td>{{result[i]['sunset']}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+   
+</div>
+
+{% endblock%}
