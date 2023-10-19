@@ -4,24 +4,6 @@ from flask_bootstrap import Bootstrap
 # Weather Prediction
 from weather import Weather
 
-# # Image Classifier
-# import os
-# from pest import Pest
-# # import numpy as np
-# # from keras.preprocessing import image
-# from keras import backend as K
-# import tensorflow as tf
-# import pickle
-# from test import Predict
-
-# # Market Stats
-# from market_stat import Market
-
-# # Crop Prediction
-# from crop_predict import Crop_Predict
-
-# # Fertilizer Info
-# import pandas as pd
 
 # Firebase
 import firebase_admin
@@ -45,8 +27,6 @@ from admin_login import Login_Admin
 # Kisan Center Login
 from kisan_center_login import Login_Kisan
 
-# # Twilo Message
-# from twilio.rest import Client
 
 # Weather Forcast 15 Days
 import requests
@@ -81,8 +61,7 @@ def weather():
             if valid == 'noData':
                 return render_template('weather_pred.html',error=1)
 
-            # weather_data = weatherModel.display()
-            # print()
+            
             invalidZip = False
             results = {"zipcode":city_name,"invalidZip":invalidZip, "weather":valid}
             print(results)
@@ -94,20 +73,17 @@ def weather():
             print(city_name)
             res = requests.get('https://www.timeanddate.com/weather/india/'+city_name+'/ext')
             data = bs4.BeautifulSoup(res.text,'lxml')
-            # print(data)
+            
             weather_table = data.find('table', {"id": "wt-ext"})
-            # print(weather_table)
+            
             tbody = weather_table.find('tbody')
             rows = tbody.find_all('tr')
-            # print(rows)
+           
             extracted_data = []
 
             # Loop through the rows and extract required attributes
             for row in rows:
                 columns = row.find_all('td')
-                # print(columns)
-                # day = columns[1].text.strip()  # Extract day
-                # print(day)
                 temp = columns[3].text.strip()  # Extract temperature
                 print(temp)
                 weather = columns[2].text.strip()  # Extract weather description
@@ -125,29 +101,7 @@ def weather():
                 extracted_data.append({'temp': temp, 'weather': weather, 'wind_speed': wind_speed, 'max_humidity': max_humidity, 'sunrise': sunrise, 'sunset': sunset})
 
             # Print the extracted data for verification
-            print(extracted_data)
-            # print(rows)
-            # temp = data.find('table',{"id": "wt-ext"})
-            # temp = data.find_all('tr','c1')
-            # print(temp)
-            # type(temp)
-            # temp
-            # lt = []
-            # for i in range(len(temp)):
-            #     dt = {}
-            #     dt['day'] = temp[i].find('th').text
-            #     x = temp[i].find_all('td')
-            #     dt['temp'] = x[1].text
-            #     dt['weather'] = x[2].text
-            #     dt['temp_max'] = x[3].text
-            #     dt['wind_speed'] = x[4].text
-            #     dt['max_humidity'] = x[6].text
-            #     dt['min_humidity'] = x[7].text
-            #     dt['sun_rise'] = x[10].text
-            #     dt['sun_set'] = x[11].text
-                
-            #     lt.append(dt)
-            
+            print(extracted_data)            
 
             return render_template('weather_15_days.html',result=extracted_data,result_len = len(extracted_data))    
     
@@ -200,8 +154,6 @@ def upload():
                 except google.cloud.exceptions.NotFound:
                     print(u'No such document!')
             
-                # result = model.predict(test_image)
-                # result =  model._make_predict_function(test_image)
             return render_template('pest_predict.html',result=result,image_name=img,data=doc)
     
     return render_template('pest.html',display=0)
@@ -307,7 +259,7 @@ def register():
 
         docs = db.collection(u'kisan_id').get()
         print(docs)
-            # print(u'{} => {}'.format(doc.id,data))
+            
 
         if password == conform_password:
              for doc in docs:
@@ -441,8 +393,7 @@ def check_issue():
 		dt['data'] = doc.to_dict()
 		lt.append(dt)
 		ids.append(doc.id)
-		# print(doc.to_dict())
-	# print(len(lt))
+		
 	print(lt)
 	print(ids)
 
@@ -461,12 +412,11 @@ def check_issue():
 	
 	print(data)
 
-	# print(lt[0]['data']['seen'])
-	# print(lt[1]['id'])
 	
-	# print(doc)
+	
+
 	return render_template('check_issue.html',data=data,data_len=len(data))
-	# return 'daata'
+	
 
 
 	
@@ -498,12 +448,11 @@ def submit_issue(user_id,data_id):
         
     print(user_id,data_id)
     return render_template('submit_issue.html',data=docs,user_id=user_id,data_id=data_id)
-	# return 'done'
+	
 
 
 @app.route('/issue_update/<user_id>',methods=['POST','GET'])
 def issue_update(user_id):
-    # docs = db.collection(u'issue').document(u''+id)
     docs =  db.collection(u'issue').document(u''+user_id).collection(u'user_issue').get()
     print(user_id)
     print(docs)
@@ -520,7 +469,7 @@ def issue_update(user_id):
 
 
     return render_template('issue_update.html',data=lt,data_len = len(lt))
-    # return 'data'
+  
 
 @app.route('/admin_login',methods=['POST','GET'])
 def admin_login():
@@ -577,7 +526,7 @@ def kisan_center():
 def add_kisan_id():
     if request.method == 'POST':
         kisan_id = request.form['kisan_id']
-        # print(kisan_id)
+        
         if len(kisan_id) != 13:
             print(kisan_id)
             return render_template('kisan_center.html',data=False,error=True)
