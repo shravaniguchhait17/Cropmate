@@ -27,7 +27,7 @@ class Login_Admin(object):
             password = request.form['pass']
             try:
                 user = self.auth.sign_in_with_email_and_password(email, password)
-                # user['id']
+                
                 return 'successful',email
             except:
                 return 'unsuccessful'
