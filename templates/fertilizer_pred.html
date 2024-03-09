@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/weather-icons.min.css') }}">
+    
+<body>
+    <br><br><br><br><br><br><br><br>
+
+    <form method="post">
+        <label for="state">Select District:</label>
+        <select name="state" id="state">
+            {% for s in states %}
+                <option value="{{ s }}" {% if s == selected_state %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+        <label for="crop">Select Crop:</label>
+        <select name="crop" id="crop">
+            {% for c in crops %}
+                <option value="{{ c }}" {% if c == selected_crop %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if display %}
+        <h2>Prediction Results</h2>
+        <table border="1">
+            <tr>
+                <th>Sr. No</th>
+                <th>Predicted Fertilizer</th>
+            </tr>
+            {% for fertilizer in result %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ fertilizer }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+{% endblock %}
